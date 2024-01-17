@@ -17,37 +17,39 @@ void main() {
       currentWindSpeed: 20.0,
       currentHumidity: 10);
 
-  setUp(() {
-    mockWeatherRepository = MockWeatherRepository();
+  group('WeatherBloc -', () {
+    setUp(() {
+      mockWeatherRepository = MockWeatherRepository();
+    });
+
+    blocTest(
+      'Get weather Success',
+      build: () {
+        when(() => mockWeatherRepository.getCurrentWeather(cityName))
+            .thenAnswer((_) async => weather);
+
+        return WeatherBloc(mockWeatherRepository);
+      },
+      act: (bloc) => bloc.add(WeatherFetched()),
+      expect: () => [
+        isA<WeatherLoading>(),
+        isA<WeatherSuccess>(),
+      ],
+    );
+
+    blocTest(
+      'Get weather Failure',
+      build: () {
+        when(() => mockWeatherRepository.getCurrentWeather(cityName))
+            .thenThrow(Exception());
+
+        return WeatherBloc(mockWeatherRepository);
+      },
+      act: (bloc) => bloc.add(WeatherFetched()),
+      expect: () => [
+        isA<WeatherLoading>(),
+        isA<WeatherFailure>(),
+      ],
+    );
   });
-
-  blocTest(
-    'Get weather Success',
-    build: () {
-      when(() => mockWeatherRepository.getCurrentWeather(cityName))
-          .thenAnswer((_) async => weather);
-
-      return WeatherBloc(mockWeatherRepository);
-    },
-    act: (bloc) => bloc.add(WeatherFetched()),
-    expect: () => [
-      isA<WeatherLoading>(),
-      isA<WeatherSuccess>(),
-    ],
-  );
-
-  blocTest(
-    'Get weather Failure',
-    build: () {
-      when(() => mockWeatherRepository.getCurrentWeather(cityName))
-          .thenThrow(Exception());
-
-      return WeatherBloc(mockWeatherRepository);
-    },
-    act: (bloc) => bloc.add(WeatherFetched()),
-    expect: () => [
-      isA<WeatherLoading>(),
-      isA<WeatherFailure>(),
-    ],
-  );
 }
