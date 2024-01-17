@@ -15,9 +15,10 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
     WeatherFetched event,
     Emitter<WeatherState> emit,
   ) async {
+    String cityName = 'New Delhi';
     emit(WeatherLoading());
     try {
-      final weather = await weatherRepository.getCurrentWeather();
+      final weather = await weatherRepository.getCurrentWeather(cityName);
       emit(WeatherSuccess(weatherModel: weather));
     } catch (e) {
       emit(WeatherFailure(e.toString()));
