@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:weather_app/bloc/weather_bloc.dart';
@@ -19,6 +20,7 @@ void main() {
 
   group('WeatherBloc -', () {
     setUp(() {
+      EquatableConfig.stringify = true;
       mockWeatherRepository = MockWeatherRepository();
     });
 
@@ -32,8 +34,8 @@ void main() {
       },
       act: (bloc) => bloc.add(WeatherFetched()),
       expect: () => [
-        isA<WeatherLoading>(),
-        isA<WeatherSuccess>(),
+        WeatherLoading(),
+        WeatherSuccess(weatherModel: weather),
       ],
     );
 

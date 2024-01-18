@@ -1,7 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
+import 'package:equatable/equatable.dart';
 
-class WeatherModel {
+class WeatherModel extends Equatable {
   final double currentTemp;
   final String currentSky;
   final int currentPressure;
@@ -15,21 +16,21 @@ class WeatherModel {
     required this.currentHumidity,
   });
 
-  WeatherModel copyWith({
-    double? currentTemp,
-    String? currentSky,
-    int? currentPressure,
-    double? currentWindSpeed,
-    int? currentHumidity,
-  }) {
-    return WeatherModel(
-      currentTemp: currentTemp ?? this.currentTemp,
-      currentSky: currentSky ?? this.currentSky,
-      currentPressure: currentPressure ?? this.currentPressure,
-      currentWindSpeed: currentWindSpeed ?? this.currentWindSpeed,
-      currentHumidity: currentHumidity ?? this.currentHumidity,
-    );
-  }
+  // WeatherModel copyWith({
+  //   double? currentTemp,
+  //   String? currentSky,
+  //   int? currentPressure,
+  //   double? currentWindSpeed,
+  //   int? currentHumidity,
+  // }) {
+  //   return WeatherModel(
+  //     currentTemp: currentTemp ?? this.currentTemp,
+  //     currentSky: currentSky ?? this.currentSky,
+  //     currentPressure: currentPressure ?? this.currentPressure,
+  //     currentWindSpeed: currentWindSpeed ?? this.currentWindSpeed,
+  //     currentHumidity: currentHumidity ?? this.currentHumidity,
+  //   );
+  // }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -58,28 +59,20 @@ class WeatherModel {
   factory WeatherModel.fromJson(String source) =>
       WeatherModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
-  @override
-  String toString() {
-    return 'WeatherModel(currentTemp: $currentTemp, currentSky: $currentSky, currentPressure: $currentPressure, currentWindSpeed: $currentWindSpeed, currentHumidity: $currentHumidity)';
-  }
+  // @override
+  // String toString() {
+  //   return 'WeatherModel(currentTemp: $currentTemp, currentSky: $currentSky, currentPressure: $currentPressure, currentWindSpeed: $currentWindSpeed, currentHumidity: $currentHumidity)';
+  // }
 
   @override
-  bool operator ==(covariant WeatherModel other) {
-    if (identical(this, other)) return true;
-
-    return other.currentTemp == currentTemp &&
-        other.currentSky == currentSky &&
-        other.currentPressure == currentPressure &&
-        other.currentWindSpeed == currentWindSpeed &&
-        other.currentHumidity == currentHumidity;
-  }
+  List<Object> get props => [
+        currentTemp,
+        currentSky,
+        currentPressure,
+        currentWindSpeed,
+        currentHumidity,
+      ];
 
   @override
-  int get hashCode {
-    return currentTemp.hashCode ^
-        currentSky.hashCode ^
-        currentPressure.hashCode ^
-        currentWindSpeed.hashCode ^
-        currentHumidity.hashCode;
-  }
+  bool get stringify => true;
 }
